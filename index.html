@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Johns Sales Dialer</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#002244">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>Johns Dialer</h1>
+  <div class="header-right">
+    <span class="queue-badge" id="queue-badge">0</span>
+    <button class="btn-refresh" id="btn-refresh" aria-label="Refresh">&#8635;</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Loading State -->
+  <div class="state-center" id="state-loading">
+    <div class="spinner"></div>
+    <div class="state-title">Loading leads...</div>
+  </div>
+
+  <!-- Error State -->
+  <div class="state-center" id="state-error">
+    <div class="state-icon">&#9888;</div>
+    <div class="state-title">Something went wrong</div>
+    <div class="state-subtitle" id="error-message">Could not load leads</div>
+    <button class="btn-retry" id="btn-retry-error">Retry</button>
+  </div>
+
+  <!-- Empty State -->
+  <div class="state-center" id="state-empty">
+    <div class="state-icon">&#10004;</div>
+    <div class="state-title">All caught up!</div>
+    <div class="state-subtitle">No more leads in the queue right now</div>
+    <button class="btn-retry" id="btn-retry-empty">Refresh</button>
+  </div>
+
+  <!-- Lead Card State -->
+  <div class="state" id="state-lead">
+
+    <!-- Card -->
+    <div class="lead-card">
+      <div class="biz-name" id="biz-name"></div>
+      <div class="contact-name" id="contact-name"></div>
+
+      <div class="meta-row">
+        <span class="meta-pill" id="meta-location"></span>
+        <span class="meta-pill" id="meta-type"></span>
+        <span class="meta-pill" id="meta-source"></span>
+      </div>
+
+      <div class="talking-angle" id="talking-angle"></div>
+      <div class="notes-box" id="notes-box"></div>
+
+      <div class="badge-row">
+        <span class="badge" id="badge-priority"></span>
+        <span class="badge badge-status" id="badge-status"></span>
+      </div>
+
+      <div class="last-contact" id="last-contact"></div>
+    </div>
+
+    <!-- Dial Button -->
+    <div class="dial-wrap">
+      <a class="dial-btn" id="dial-btn" href="tel:">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.55.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.55 1 1 0 01-.25 1.02l-2.2 2.22z"/></svg>
+        <span id="dial-number"></span>
+      </a>
+      <div class="dial-label">TAP TO DIAL</div>
+    </div>
+
+    <!-- Outcomes (hidden until dial tapped) -->
+    <div class="outcomes-section" id="outcomes-section">
+      <div class="outcomes-prompt">How did it go?</div>
+      <div class="outcomes-grid">
+        <button class="outcome-btn interested" data-outcome="Interested">Interested</button>
+        <button class="outcome-btn statement" data-outcome="Sent Statement">Sent Statement</button>
+        <button class="outcome-btn meeting" data-outcome="Booked Meeting">Booked Meeting</button>
+        <button class="outcome-btn callback" data-outcome="Callback Later">Callback Later</button>
+        <button class="outcome-btn no-answer" data-outcome="No Answer">No Answer</button>
+        <button class="outcome-btn voicemail" data-outcome="Voicemail Left">Voicemail Left</button>
+        <button class="outcome-btn not-interested" data-outcome="Not Interested">Not Interested</button>
+        <button class="outcome-btn wrong-number" data-outcome="Wrong Number">Wrong Number</button>
+      </div>
+    </div>
+
+    <!-- Secondary -->
+    <div class="secondary-row">
+      <button class="btn-skip" id="btn-skip">Skip</button>
+      <span class="counter-text" id="counter-text"></span>
+    </div>
+  </div>
+
+  <!-- Success Flash -->
+  <div class="success-flash" id="state-success">
+    <div class="success-check">&#10003;</div>
+    <div class="success-text" id="success-text">Logged!</div>
+  </div>
+
+  <!-- Updating State -->
+  <div class="state-center" id="state-updating">
+    <div class="spinner"></div>
+    <div class="state-title">Logging outcome...</div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
