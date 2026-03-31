@@ -3,13 +3,10 @@
  *
  * Reads leads from Google Apps Script, renders one at a time,
  * handles dial tap + outcome logging.
- *
- * Replace API_URL with the deployed Apps Script web app URL.
  */
 
 // ─── CONFIG ──────────────────────────────────────────────────────────
-// After deploying the Apps Script, paste the web app URL here:
-var API_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+var API_URL = 'https://script.google.com/macros/s/AKfycbw9NR0L2XXae7CzM4hvJJFpDtqLGZ-y9UeS223RPr2sLvYk3KzgrQwwB2VYuqrElgxd/exec';
 
 // ─── STATE ───────────────────────────────────────────────────────────
 var leads = [];
@@ -22,29 +19,24 @@ var $ = function (id) { return document.getElementById(id); };
 
 // ─── INIT ────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
-  // Register service worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(function () {});
   }
 
-  // Event listeners
   $('btn-refresh').addEventListener('click', fetchLeads);
   $('btn-retry-error').addEventListener('click', fetchLeads);
   $('btn-retry-empty').addEventListener('click', fetchLeads);
   $('btn-skip').addEventListener('click', skip);
 
-  // Dial button — show outcomes on tap, let tel: link fire natively
   $('dial-btn').addEventListener('click', function () {
     dialTapped = true;
     var section = $('outcomes-section');
     section.classList.add('visible');
-    // Smooth scroll to outcomes
     setTimeout(function () {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 300);
   });
 
-  // Outcome buttons
   var buttons = document.querySelectorAll('.outcome-btn');
   for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', function () {
@@ -91,10 +83,8 @@ function renderLead() {
   var lead = leads[currentIndex];
   showState('state-lead');
 
-  // Business name
   $('biz-name').textContent = lead.business_name || 'Unknown Business';
 
-  // Contact name
   var contactEl = $('contact-name');
   if (lead.contact_name) {
     contactEl.textContent = lead.contact_name;
@@ -103,12 +93,10 @@ function renderLead() {
     contactEl.style.display = 'none';
   }
 
-  // Meta pills
   $('meta-location').textContent = lead.location || '—';
   $('meta-type').textContent = lead.business_type || '—';
   $('meta-source').textContent = lead.lead_source || '—';
 
-  // Talking angle
   var angleEl = $('talking-angle');
   if (lead.talking_angle) {
     angleEl.textContent = lead.talking_angle;
@@ -117,7 +105,6 @@ function renderLead() {
     angleEl.style.display = 'none';
   }
 
-  // Notes
   var notesEl = $('notes-box');
   if (lead.notes_for_john) {
     notesEl.textContent = lead.notes_for_john;
@@ -126,7 +113,6 @@ function renderLead() {
     notesEl.style.display = 'none';
   }
 
-  // Priority badge
   var prBadge = $('badge-priority');
   prBadge.textContent = lead.priority || 'Warm';
   prBadge.className = 'badge';
@@ -135,10 +121,8 @@ function renderLead() {
   else if (pr === 'warm') prBadge.classList.add('badge-warm');
   else prBadge.classList.add('badge-cold');
 
-  // Status badge
   $('badge-status').textContent = lead.current_status || '—';
 
-  // Last contact
   var lcEl = $('last-contact');
   if (lead.last_contact_date) {
     var lcText = 'Last contact: ' + lead.last_contact_date;
@@ -151,20 +135,16 @@ function renderLead() {
     lcEl.style.display = '';
   }
 
-  // Dial button
   var phone = lead.phone_number || '';
   $('dial-btn').href = 'tel:' + cleanPhone(phone);
   $('dial-number').textContent = formatPhone(phone);
 
-  // Reset outcomes
   dialTapped = false;
   $('outcomes-section').classList.remove('visible');
   enableOutcomeButtons();
 
-  // Counter
   $('counter-text').textContent = (currentIndex + 1) + ' of ' + leads.length;
 
-  // Scroll to top
   window.scrollTo(0, 0);
 }
 
@@ -195,7 +175,6 @@ function onOutcome(outcome) {
         return;
       }
 
-      // Success flash
       $('success-text').textContent = 'Logged: ' + outcome;
       showState('state-success');
 
@@ -264,7 +243,6 @@ function enableOutcomeButtons() {
 
 // ─── PHONE HELPERS ───────────────────────────────────────────────────
 function cleanPhone(raw) {
-  // Strip everything except digits and leading +
   var s = String(raw || '').trim();
   if (s.charAt(0) === '+') {
     return '+' + s.replace(/[^\d]/g, '');
@@ -274,16 +252,12 @@ function cleanPhone(raw) {
 
 function formatPhone(raw) {
   var s = String(raw || '').trim();
-  // Already formatted nicely — just return it
   if (s.indexOf(' ') !== -1) return s;
-  // Raw digits — format UK-style
   var digits = s.replace(/[^\d]/g, '');
   if (digits.length === 11 && digits.charAt(0) === '0') {
-    // 07xxx xxxxxx
     return digits.substring(0, 5) + ' ' + digits.substring(5, 8) + ' ' + digits.substring(8);
   }
   if (digits.length === 12 && digits.substring(0, 2) === '44') {
-    // +44 7xxx xxxxxx
     return '+44 ' + digits.substring(2, 6) + ' ' + digits.substring(6, 9) + ' ' + digits.substring(9);
   }
   return s;
