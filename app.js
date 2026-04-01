@@ -1,5 +1,5 @@
 /**
- * John's Sales Dialer — App Logic
+ * John's Sales Dialer — App Logic (Simplified)
  *
  * Reads leads from Google Apps Script, renders one at a time,
  * handles dial tap + outcome logging.
@@ -85,54 +85,13 @@ function renderLead() {
 
   $('biz-name').textContent = lead.business_name || 'Unknown Business';
 
-  var contactEl = $('contact-name');
-  if (lead.contact_name) {
-    contactEl.textContent = lead.contact_name;
-    contactEl.style.display = '';
+  var typeEl = $('biz-type');
+  var typeText = lead.business_type || '';
+  if (typeText) {
+    typeEl.textContent = typeText;
+    typeEl.style.display = '';
   } else {
-    contactEl.style.display = 'none';
-  }
-
-  $('meta-location').textContent = lead.location || '—';
-  $('meta-type').textContent = lead.business_type || '—';
-  $('meta-source').textContent = lead.lead_source || '—';
-
-  var angleEl = $('talking-angle');
-  if (lead.talking_angle) {
-    angleEl.textContent = lead.talking_angle;
-    angleEl.style.display = '';
-  } else {
-    angleEl.style.display = 'none';
-  }
-
-  var notesEl = $('notes-box');
-  if (lead.notes_for_john) {
-    notesEl.textContent = lead.notes_for_john;
-    notesEl.style.display = '';
-  } else {
-    notesEl.style.display = 'none';
-  }
-
-  var prBadge = $('badge-priority');
-  prBadge.textContent = lead.priority || 'Warm';
-  prBadge.className = 'badge';
-  var pr = (lead.priority || '').toLowerCase();
-  if (pr === 'hot') prBadge.classList.add('badge-hot');
-  else if (pr === 'warm') prBadge.classList.add('badge-warm');
-  else prBadge.classList.add('badge-cold');
-
-  $('badge-status').textContent = lead.current_status || '—';
-
-  var lcEl = $('last-contact');
-  if (lead.last_contact_date) {
-    var lcText = 'Last contact: ' + lead.last_contact_date;
-    if (lead.last_contact_time) lcText += ' at ' + lead.last_contact_time;
-    if (lead.last_call_outcome) lcText += ' — ' + lead.last_call_outcome;
-    lcEl.textContent = lcText;
-    lcEl.style.display = '';
-  } else {
-    lcEl.textContent = 'Never contacted';
-    lcEl.style.display = '';
+    typeEl.style.display = 'none';
   }
 
   var phone = lead.phone_number || '';
@@ -159,7 +118,6 @@ function onOutcome(outcome) {
 
   fetch(API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       lead_id: lead.lead_id,
       outcome: outcome

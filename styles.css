@@ -5,7 +5,6 @@
   --grey: #F3F4F6;
   --grey-text: #6B7280;
   --red: #EF4444;
-  --red-dark: #DC2626;
   --white: #FFFFFF;
   --orange: #F59E0B;
   --blue: #3B82F6;
@@ -124,89 +123,28 @@ body {
 .lead-card {
   background: var(--white);
   border-radius: 14px;
-  padding: 18px 16px;
+  padding: 20px 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   margin-bottom: 12px;
+  text-align: center;
 }
 
 .biz-name {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--navy);
   line-height: 1.2;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
-.contact-name {
-  font-size: 15px;
-  color: var(--grey-text);
-  margin-bottom: 10px;
-}
-
-.meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.meta-pill {
+.type-pill {
+  display: inline-block;
   background: var(--grey);
   color: #374151;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 10px;
-  border-radius: 8px;
-}
-
-.talking-angle {
-  background: #FEF3C7;
-  border-left: 3px solid var(--orange);
-  padding: 10px 12px;
-  border-radius: 0 8px 8px 0;
-  font-size: 14px;
-  color: #92400E;
-  margin-bottom: 10px;
-  line-height: 1.4;
-}
-
-.notes-box {
-  background: #EFF6FF;
-  border-left: 3px solid var(--blue);
-  padding: 10px 12px;
-  border-radius: 0 8px 8px 0;
   font-size: 13px;
-  color: #1E40AF;
-  margin-bottom: 10px;
-  line-height: 1.4;
-}
-
-.badge-row {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-}
-
-.badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.badge-hot { background: #FEE2E2; color: #DC2626; }
-.badge-warm { background: #FEF3C7; color: #D97706; }
-.badge-cold { background: #DBEAFE; color: #2563EB; }
-.badge-status { background: #F3F4F6; color: #374151; }
-
-.last-contact {
-  font-size: 12px;
-  color: var(--grey-text);
-  margin-top: 6px;
+  font-weight: 500;
+  padding: 4px 14px;
+  border-radius: 10px;
 }
 
 /* ─── Dial Button ────────────────────────── */
@@ -298,14 +236,11 @@ body {
   cursor: not-allowed;
 }
 
-.outcome-btn.interested    { background: #16A34A; }
-.outcome-btn.not-interested { background: #EF4444; }
-.outcome-btn.no-answer     { background: #6B7280; }
-.outcome-btn.callback      { background: #F59E0B; color: #1F2937; }
-.outcome-btn.statement     { background: #3B82F6; }
-.outcome-btn.meeting       { background: #8B5CF6; }
-.outcome-btn.wrong-number  { background: #DC2626; }
-.outcome-btn.voicemail     { background: #9CA3AF; }
+.outcome-btn.interested     { background: #16A34A; }
+.outcome-btn.statement      { background: #3B82F6; }
+.outcome-btn.potential       { background: #8B5CF6; }
+.outcome-btn.callback       { background: #F59E0B; color: #1F2937; }
+.outcome-btn.not-interested { background: #EF4444; grid-column: 1 / -1; }
 
 /* ─── Secondary Actions ──────────────────── */
 
