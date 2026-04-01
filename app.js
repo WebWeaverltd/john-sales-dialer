@@ -60,7 +60,19 @@ function fetchLeads() {
       }
       leads = data.leads || [];
       currentIndex = 0;
-      $('queue-badge').textContent = leads.length;
+
+      // Resume from where John left off
+      var lastId = localStorage.getItem('dialer_last_lead');
+      if (lastId) {
+        for (var i = 0; i < leads.length; i++) {
+          if (leads[i].lead_id === lastId) {
+            currentIndex = i;
+            break;
+          }
+        }
+      }
+
+      $('queue-badge').textContent = leads.length - currentIndex;
 
       if (leads.length === 0) {
         showState('state-empty');
@@ -82,6 +94,9 @@ function renderLead() {
 
   var lead = leads[currentIndex];
   showState('state-lead');
+
+  // Save position so John can resume later
+  localStorage.setItem('dialer_last_lead', lead.lead_id);
 
   $('biz-name').textContent = lead.business_name || 'Unknown Business';
 
