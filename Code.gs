@@ -59,6 +59,13 @@ var VALID_OUTCOMES = [
 
 function doGet(e) {
   try {
+    var params = e.parameter || {};
+
+    // If action=log, handle outcome logging via GET
+    if (params.action === 'log') {
+      return logOutcome(params.lead_id, params.outcome);
+    }
+
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheetByName('Leads');
     if (!sheet) {
@@ -113,14 +120,10 @@ function doGet(e) {
   }
 }
 
-// ─── POST: Log call outcome ──────────────────────────────────────────
+// ─── LOG OUTCOME (called from doGet with action=log) ─────────────────
 
-function doPost(e) {
+function logOutcome(leadId, outcome) {
   try {
-    var payload = JSON.parse(e.postData.contents);
-    var leadId = payload.lead_id;
-    var outcome = payload.outcome;
-
     if (!leadId || !outcome) {
       return jsonResponse({ error: 'Missing lead_id or outcome' }, 400);
     }

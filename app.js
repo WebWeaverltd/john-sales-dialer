@@ -116,13 +116,9 @@ function onOutcome(outcome) {
   var lead = leads[currentIndex];
   showState('state-updating');
 
-  fetch(API_URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      lead_id: lead.lead_id,
-      outcome: outcome
-    })
-  })
+  var logUrl = API_URL + '?action=log&lead_id=' + encodeURIComponent(lead.lead_id) + '&outcome=' + encodeURIComponent(outcome);
+
+  fetch(logUrl)
     .then(function (res) { return res.json(); })
     .then(function (data) {
       if (data.error) {
