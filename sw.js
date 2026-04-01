@@ -1,4 +1,4 @@
-var CACHE_NAME = 'sales-dialer-v1';
+var CACHE_NAME = 'sales-dialer-v2';
 var ASSETS = ['./', 'index.html', 'app.js', 'styles.css', 'manifest.json'];
 
 self.addEventListener('install', function (e) {
